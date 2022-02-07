@@ -13,8 +13,8 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import app.icebox.ui.layout.Add
-import app.icebox.ui.layout.Home
+import app.icebox.ui.add.Add
+import app.icebox.ui.home.Home
 import app.icebox.ui.theme.IceBoxTheme
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.statusBarsHeight

@@ -1,4 +1,4 @@
-package app.icebox.ui.layout
+package app.icebox.ui.add
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.Scaffold
@@ -11,6 +11,8 @@ import app.icebox.Packages.getInstalledPackages
 import app.icebox.Packages.loadDisablePackageList
 import app.icebox.Packages.saveDisablePackageList
 import app.icebox.Packages.saveIcon
+import app.icebox.ui.layout.FloatingButton
+import app.icebox.ui.layout.TopBar
 
 @ExperimentalFoundationApi
 @Composable

@@ -1,4 +1,4 @@
-package app.icebox.ui.layout
+package app.icebox.ui.add
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues

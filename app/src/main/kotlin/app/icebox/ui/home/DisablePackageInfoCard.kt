@@ -1,4 +1,4 @@
-package app.icebox.ui.layout
+package app.icebox.ui.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import app.icebox.*
+import app.icebox.DisablePackageInfo
 import app.icebox.Packages.doubleTapDisablePackageInfoCard
 import app.icebox.Packages.tapDisablePackageInfoCard
 import coil.compose.rememberImagePainter

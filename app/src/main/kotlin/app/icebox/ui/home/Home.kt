@@ -1,4 +1,4 @@
-package app.icebox.ui.layout
+package app.icebox.ui.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -16,6 +16,7 @@ import app.icebox.Packages.getDisablePackages
 import app.icebox.Packages.longPressDisableIcon
 import app.icebox.Packages.tapDisableIcon
 import app.icebox.R
+import app.icebox.ui.layout.TopBar
 
 @ExperimentalFoundationApi
 @Composable
