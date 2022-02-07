@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">冰箱</string>
+    <string name="toast_enable">解冻：%s</string>
+    <string name="toast_disable">冻结：%s</string>
+</resources>
