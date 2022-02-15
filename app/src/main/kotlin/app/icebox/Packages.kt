@@ -51,8 +51,8 @@ object Packages {
     fun launchApplication(packageName: String) =
         app.startActivity(packageManager.getLaunchIntentForPackage(packageName))
 
-    fun getInstalledPackages(): MutableList<AppInfo> {
-        val installedAppsInfo = mutableListOf<AppInfo>()
+    fun getInstalledPackages(): MutableList<InstalledApplication> {
+        val installedAppsInfo = mutableListOf<InstalledApplication>()
         packageManager.getInstalledPackages(0).forEach {
             if (it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
                 val applicationLabel = it.applicationInfo.loadLabel(packageManager).toString()
@@ -60,7 +60,7 @@ object Packages {
                 val packageName = it.packageName
                 val drawable = packageName.lowercase().replace(".", "_")
                 installedAppsInfo.add(
-                    AppInfo(
+                    InstalledApplication(
                         applicationLabel = applicationLabel,
                         applicationIcon = applicationIcon,
                         drawable = drawable,
@@ -78,7 +78,7 @@ object Packages {
     /**
      * 使用图标包
      */
-    fun applyIconPack(packages: MutableList<AppInfo>): MutableList<AppInfo> {
+    fun applyIconPack(aPackages: MutableList<InstalledApplication>): MutableList<InstalledApplication> {
         val iconPack =
             app.packageManager.getResourcesForApplication("app.iconpack")
         val identifier = iconPack.getIdentifier("appfilter", "xml", "app.iconpack")
@@ -94,7 +94,7 @@ object Packages {
                             iconPack.getIdentifier(drawable, "drawable", "app.iconpack")
                         val applicationIcon =
                             ResourcesCompat.getDrawable(iconPack, applicationIconId, null)
-                        packages.forEach {
+                        aPackages.forEach {
                             if (packageName == it.packageName) {
                                 if (applicationIcon != null) {
                                     it.applicationIcon = applicationIcon
@@ -106,10 +106,10 @@ object Packages {
             }
             xmlResourceParser.next()
         }
-        packages.sortBy {
+        aPackages.sortBy {
             it.drawable
         }
-        return packages
+        return aPackages
     }
 
     /**
@@ -147,15 +147,15 @@ object Packages {
         }
     }
 
-    fun getDisablePackages(): MutableList<DisablePackageInfo>? {
+    fun getDisablePackages(): MutableList<DisabledApplication>? {
         if (loadDisablePackageList() != null) {
-            val disablePackagesInfo = mutableListOf<DisablePackageInfo>()
+            val disablePackagesInfo = mutableListOf<DisabledApplication>()
             loadDisablePackageList()?.forEach {
                 val drawable = it.lowercase().replace(".", "_")
                 val packageName = it
                 val file = File("${app.filesDir.absolutePath}/icon/${drawable}.png")
                 disablePackagesInfo.add(
-                    DisablePackageInfo(drawable = drawable, packageName = packageName, file = file)
+                    DisabledApplication(drawable = drawable, packageName = packageName, file = file)
                 )
             }
             disablePackagesInfo.sortBy {
@@ -203,28 +203,28 @@ object Packages {
         app.startActivity(intent)
     }
 
-    fun tapDisablePackageInfoCard(disablePackagesInfo: DisablePackageInfo) {
+    fun tapDisabledApplicationCard(disabledApplication: DisabledApplication) {
         backToHome()
-        when (getApplicationIsEnable(disablePackagesInfo.packageName)) {
+        when (getApplicationIsEnable(disabledApplication.packageName)) {
             true -> {
 
-                launchApplication(disablePackagesInfo.packageName)
+                launchApplication(disabledApplication.packageName)
             }
             false -> {
-                setAppDisabledAsUser(disablePackagesInfo.packageName, false)
-                launchApplication(disablePackagesInfo.packageName)
+                setAppDisabledAsUser(disabledApplication.packageName, false)
+                launchApplication(disabledApplication.packageName)
             }
             null -> {
             }
         }
     }
 
-    fun doubleTapDisablePackageInfoCard(disablePackagesInfo: DisablePackageInfo) {
-        when (getApplicationIsEnable(disablePackagesInfo.packageName)) {
+    fun doubleTapDisabledApplicationCard(disabledApplication: DisabledApplication) {
+        when (getApplicationIsEnable(disabledApplication.packageName)) {
             true -> {
-                setAppDisabledAsUser(disablePackagesInfo.packageName, true)
+                setAppDisabledAsUser(disabledApplication.packageName, true)
                 Toast.showToast(
-                    disablePackagesInfo.packageName,
+                    disabledApplication.packageName,
                     R.string.toast_disable
                 )
             }
@@ -236,9 +236,9 @@ object Packages {
         }
     }
 
-    fun tapDisableIcon(disablePackages: MutableList<DisablePackageInfo>?) {
-        if (disablePackages != null) {
-            disablePackages.forEach {
+    fun tapFloatingActionButton(disabledApplications: MutableList<DisabledApplication>?) {
+        if (disabledApplications != null) {
+            disabledApplications.forEach {
                 when (getApplicationIsEnable(it.packageName)) {
                     true -> {
                         setAppDisabledAsUser(it.packageName, true)
@@ -256,9 +256,9 @@ object Packages {
         }
     }
 
-    fun longPressDisableIcon(disablePackages: MutableList<DisablePackageInfo>?) {
-        if (disablePackages != null) {
-            disablePackages.forEach {
+    fun longPressFloatingActionButton(disabledApplications: MutableList<DisabledApplication>?) {
+        if (disabledApplications != null) {
+            disabledApplications.forEach {
                 when (getApplicationIsEnable(it.packageName)) {
                     true -> {
                     }

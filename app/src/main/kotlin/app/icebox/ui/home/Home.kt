@@ -13,15 +13,17 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import app.icebox.Packages.getDisablePackages
-import app.icebox.Packages.longPressDisableIcon
-import app.icebox.Packages.tapDisableIcon
+import app.icebox.Packages.longPressFloatingActionButton
+import app.icebox.Packages.tapFloatingActionButton
 import app.icebox.R
 import app.icebox.ui.layout.TopBar
+import app.icebox.util.ShortcutUtil.getShortcuts
 
 @ExperimentalFoundationApi
 @Composable
 fun Home(navController: NavController) {
     val disablePackages = getDisablePackages()
+    val shortcuts = getShortcuts()
     Scaffold(
         topBar = {
             TopBar {
@@ -30,11 +32,10 @@ fun Home(navController: NavController) {
         },
         content = {
             if (disablePackages != null) {
-                DisablePackageInfoGrid(iconsInfo = disablePackages)
+                IconGrid(disabledApplications = disablePackages, shortcuts = shortcuts)
             } else {
                 Text(text = "please add disable package")
             }
-
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -48,12 +49,12 @@ fun Home(navController: NavController) {
                     modifier = Modifier.pointerInput(Unit) {
                         detectTapGestures(
                             onTap = {
-                                tapDisableIcon(disablePackages = disablePackages)
+                                tapFloatingActionButton(disabledApplications = disablePackages)
                             },
                             onDoubleTap = {
                             },
                             onLongPress = {
-                                longPressDisableIcon(disablePackages = disablePackages)
+                                longPressFloatingActionButton(disabledApplications = disablePackages)
                             })
                     })
             }

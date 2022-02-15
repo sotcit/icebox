@@ -1,5 +1,6 @@
 package app.icebox.ui.add
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Checkbox
@@ -10,12 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import app.icebox.AppInfo
+import app.icebox.InstalledApplication
+import app.icebox.Packages.getApplicationIsEnable
 import coil.compose.rememberImagePainter
+import coil.transform.GrayscaleTransformation
 
+@ExperimentalFoundationApi
 @Composable
-fun InstalledPackageInfoCard(
-    appInfo: AppInfo,
+fun InstalledApplicationCard(
+    installedApplication: InstalledApplication,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
@@ -25,7 +29,13 @@ fun InstalledPackageInfoCard(
         modifier = Modifier.fillMaxWidth()
     ) {
         Image(
-            painter = rememberImagePainter(appInfo.applicationIcon),
+            painter = rememberImagePainter(
+                installedApplication.applicationIcon, builder = {
+                    if (getApplicationIsEnable(installedApplication.packageName) == false) {
+                        transformations(GrayscaleTransformation())
+                    }
+                }
+            ),
             contentDescription = null,
             modifier = Modifier
                 .size(55.dp)
@@ -34,11 +44,11 @@ fun InstalledPackageInfoCard(
             modifier = Modifier.width(255.dp)
         ) {
             Text(
-                text = appInfo.applicationLabel,
+                text = installedApplication.applicationLabel,
                 textAlign = TextAlign.Start
             )
             Text(
-                text = appInfo.packageName,
+                text = installedApplication.packageName,
                 textAlign = TextAlign.Start,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

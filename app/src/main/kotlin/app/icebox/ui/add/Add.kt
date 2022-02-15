@@ -39,8 +39,8 @@ fun Add(navController: NavController) {
             }
         },
         content = {
-            InstalledPackageColumn(
-                iconsInfo = installedPackages,
+            InstalledApplicationColumn(
+                installedApplications = installedPackages,
                 booleanArray = booleanArray,
                 export = export
             )

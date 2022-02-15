@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable
  * @param packageName 应用包名
  * @param applicationIcon 应用图标
  */
-data class AppInfo(
+data class InstalledApplication(
     val applicationLabel: String,
     var applicationIcon: Drawable,
     val drawable: String,
