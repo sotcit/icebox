@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.unit.dp
-import app.icebox.InstalledApplication
+import app.icebox.data.InstalledPackage
 
 @ExperimentalFoundationApi
 @Composable
 fun InstalledApplicationColumn(
-    installedApplications: MutableList<InstalledApplication>,
+    installedPackages: List<InstalledPackage>,
     booleanArray: BooleanArray,
     export: MutableList<String>
 ) {
@@ -22,19 +22,19 @@ fun InstalledApplicationColumn(
         contentPadding = PaddingValues(10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        items(installedApplications) { installedApplication ->
-            val index = installedApplications.indexOf(installedApplication)
+        items(installedPackages) { installedPackage ->
+            val index = installedPackages.indexOf(installedPackage)
             val checked = rememberSaveable { mutableStateOf(booleanArray[index]) }
             InstalledApplicationCard(
-                installedApplication = installedApplication,
+                installedPackage = installedPackage,
                 checked = checked.value,
                 onCheckedChange = {
                     checked.value = !checked.value
                     booleanArray[index] = checked.value
                     if (checked.value) {
-                        export.add(installedApplication.packageName)
+                        export.add(installedPackage.packageName)
                     } else {
-                        export.remove(installedApplication.packageName)
+                        export.remove(installedPackage.packageName)
                     }
                 })
         }

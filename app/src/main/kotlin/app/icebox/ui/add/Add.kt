@@ -4,33 +4,34 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import app.icebox.Packages.applyIconPack
-import app.icebox.Packages.deleteDisablePackageList
-import app.icebox.Packages.deleteIconDir
-import app.icebox.Packages.getInstalledPackages
-import app.icebox.Packages.loadDisablePackageList
-import app.icebox.Packages.saveDisablePackageList
-import app.icebox.Packages.saveIcon
 import app.icebox.ui.layout.FloatingButton
 import app.icebox.ui.layout.TopBar
+import app.icebox.util.FileUtil.copyFile
+import app.icebox.util.FileUtil.getIconDir
+import app.icebox.util.FileUtil.initFileDir
+import app.icebox.util.IconPackUtil.getAppResources
+import app.icebox.util.IconPackUtil.getIdentifier
+import app.icebox.util.PackageUtil.deleteDisabledPackages
+import app.icebox.util.PackageUtil.getInstalledPackages
+import app.icebox.util.PackageUtil.loadDisabledPackages
+import app.icebox.util.PackageUtil.saveDisabledPackages
+import java.io.File
 
 @ExperimentalFoundationApi
 @Composable
 fun Add(navController: NavController) {
-    val disablePackageList = loadDisablePackageList()
-    val installedPackages = applyIconPack(getInstalledPackages())
+    val installedPackages = getInstalledPackages()
+    val disabledPackages = loadDisabledPackages()
     val booleanArray = BooleanArray(installedPackages.size)
     val export = mutableListOf<String>()
-    if (disablePackageList != null) {
-        for (disablePackage in disablePackageList) {
-            installedPackages.forEach {
-                if (disablePackage == it.packageName) {
-                    val index = installedPackages.indexOf(it)
-                    booleanArray[index] = true
-                }
+    for (disabledPackage in disabledPackages) {
+        installedPackages.forEach {
+            if (disabledPackage == it.packageName) {
+                val index = installedPackages.indexOf(it)
+                booleanArray[index] = true
             }
-            export.add(disablePackage)
         }
+        export.add(disabledPackage)
     }
     Scaffold(
         topBar = {
@@ -40,21 +41,34 @@ fun Add(navController: NavController) {
         },
         content = {
             InstalledApplicationColumn(
-                installedApplications = installedPackages,
+                installedPackages = installedPackages,
                 booleanArray = booleanArray,
                 export = export
             )
         },
         floatingActionButton = {
             FloatingButton {
-                deleteDisablePackageList()
-                deleteIconDir()
-                saveDisablePackageList(export)
-                for (installedPackage in installedPackages) {
-                    export.forEach {
-                        if (installedPackage.packageName == it) {
-                            saveIcon(installedPackage.drawable, installedPackage.applicationIcon)
-                        }
+                deleteDisabledPackages()
+                export.sort()
+                saveDisabledPackages(export)
+                val appResources = getAppResources("app.iconpack")
+                val iconDir = getIconDir()
+                initFileDir(iconDir)
+                export.forEach {
+                    val name = it.lowercase().replace(".", "_")
+                    val identifier = getIdentifier(appResources, name, "drawable", "app.iconpack")
+                    val file = File(iconDir, "${name}.png")
+                    copyFile(appResources, identifier, file)
+                }
+                listOf(
+                    "shortcut_alipay_pay",
+                    "shortcut_alipay_scan",
+                    "shortcut_unionpay_pay",
+                    "shortcut_wechat_pay",
+                    "shortcut_wechat_scan"
+                ).forEach {
+                    getIdentifier(appResources, it, "drawable", "app.iconpack").run {
+                        copyFile(appResources, this, File(iconDir, "${it}.png"))
                     }
                 }
             }

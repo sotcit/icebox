@@ -8,26 +8,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import app.icebox.DisabledApplication
-import app.icebox.Packages.doubleTapDisabledApplicationCard
-import app.icebox.Packages.tapDisabledApplicationCard
+import app.icebox.data.DisabledPackage
+import app.icebox.util.PackageUtil.doubleTapDisabledPackageCard
+import app.icebox.util.PackageUtil.tapDisabledPackageCard
 import coil.compose.rememberImagePainter
 
 @ExperimentalFoundationApi
 @Composable
-fun DisabledApplicationCard(disabledApplication: DisabledApplication) {
+fun DisabledApplicationCard(disabledPackage: DisabledPackage) {
     Image(
-        painter = rememberImagePainter(disabledApplication.file),
+        painter = rememberImagePainter(disabledPackage.file),
         contentDescription = null,
         modifier = Modifier
             .size(65.dp)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
-                        tapDisabledApplicationCard(disabledApplication = disabledApplication)
+                        tapDisabledPackageCard(disabledPackage.packageName)
                     },
                     onDoubleTap = {
-                        doubleTapDisabledApplicationCard(disabledApplication = disabledApplication)
+                        doubleTapDisabledPackageCard(disabledPackage.packageName)
                     },
                     onLongPress = {
                     }

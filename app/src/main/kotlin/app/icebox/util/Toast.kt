@@ -1,8 +1,10 @@
-package app.icebox
+package app.icebox.util
 
 import android.widget.Toast
+import android.widget.Toast.makeText
 import androidx.compose.foundation.ExperimentalFoundationApi
-import app.icebox.Packages.getApplicationInfoOrNull
+import app.icebox.MainActivity
+import app.icebox.util.PackageUtil.getApplicationInfoOrNull
 
 @ExperimentalFoundationApi
 object Toast {
@@ -15,7 +17,7 @@ object Toast {
      * @param resId 操作返回码
      */
     fun showToast(packageName: String, resId: Int) {
-        Toast.makeText(
+        makeText(
             app,
             app.getString(resId, getApplicationInfoOrNull(packageName)?.loadLabel(packageManager)),
             Toast.LENGTH_SHORT
@@ -23,7 +25,7 @@ object Toast {
     }
 
     fun showToast(message: String) {
-        Toast.makeText(
+        makeText(
             app,
             message,
             Toast.LENGTH_SHORT

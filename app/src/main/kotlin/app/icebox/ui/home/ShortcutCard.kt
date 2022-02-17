@@ -7,23 +7,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import app.icebox.Shortcut
-import app.icebox.util.ShortcutUtil.start
+import app.icebox.data.Shortcut
+import app.icebox.util.ShortcutUtil.startShortcut
+import coil.compose.rememberImagePainter
 
 @ExperimentalFoundationApi
 @Composable
 fun ShortcutCard(shortcut: Shortcut) {
     Image(
-        painter = painterResource(shortcut.icon),
+        painter = rememberImagePainter(shortcut.icon),
         contentDescription = null,
         modifier = Modifier
             .size(65.dp)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
-                        start(shortcut = shortcut)
+                        startShortcut(shortcut = shortcut)
                     }
                 )
             }

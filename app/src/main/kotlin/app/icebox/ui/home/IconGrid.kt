@@ -10,23 +10,23 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.icebox.DisabledApplication
-import app.icebox.Shortcut
+import app.icebox.data.DisabledPackage
+import app.icebox.data.Shortcut
 
 @ExperimentalFoundationApi
 @Composable
-fun IconGrid(disabledApplications: List<DisabledApplication>, shortcuts: List<Shortcut>) {
+fun IconGrid(disablePackages: List<DisabledPackage>, shortcuts: List<Shortcut>) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(count = 4),
         contentPadding = PaddingValues(10.dp, 25.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier.fillMaxHeight()
     ) {
-        items(disabledApplications) { disablePackage ->
-            DisabledApplicationCard(disabledApplication = disablePackage)
+        items(disablePackages) { disablePackage ->
+            DisabledApplicationCard(disablePackage)
         }
         items(shortcuts) { shortcut ->
-            ShortcutCard(shortcut = shortcut)
+            ShortcutCard(shortcut)
         }
     }
 }

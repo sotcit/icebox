@@ -5,24 +5,23 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
-import app.icebox.Packages.getDisablePackages
-import app.icebox.Packages.longPressFloatingActionButton
-import app.icebox.Packages.tapFloatingActionButton
 import app.icebox.R
 import app.icebox.ui.layout.TopBar
+import app.icebox.util.PackageUtil.getDisabledPackages
+import app.icebox.util.PackageUtil.longPressFloatingActionButton
+import app.icebox.util.PackageUtil.tapFloatingActionButton
 import app.icebox.util.ShortcutUtil.getShortcuts
 
 @ExperimentalFoundationApi
 @Composable
 fun Home(navController: NavController) {
-    val disablePackages = getDisablePackages()
+    val disabledPackages = getDisabledPackages()
     val shortcuts = getShortcuts()
     Scaffold(
         topBar = {
@@ -31,11 +30,7 @@ fun Home(navController: NavController) {
             }
         },
         content = {
-            if (disablePackages != null) {
-                IconGrid(disabledApplications = disablePackages, shortcuts = shortcuts)
-            } else {
-                Text(text = "please add disable package")
-            }
+            IconGrid(disabledPackages, shortcuts)
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -49,12 +44,12 @@ fun Home(navController: NavController) {
                     modifier = Modifier.pointerInput(Unit) {
                         detectTapGestures(
                             onTap = {
-                                tapFloatingActionButton(disabledApplications = disablePackages)
+                                tapFloatingActionButton(disabledPackages)
                             },
                             onDoubleTap = {
                             },
                             onLongPress = {
-                                longPressFloatingActionButton(disabledApplications = disablePackages)
+                                longPressFloatingActionButton(disabledPackages)
                             })
                     })
             }

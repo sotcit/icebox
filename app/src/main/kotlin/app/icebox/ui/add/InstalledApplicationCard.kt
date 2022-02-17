@@ -11,15 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import app.icebox.InstalledApplication
-import app.icebox.Packages.getApplicationIsEnable
+import app.icebox.data.InstalledPackage
+import app.icebox.util.PackageUtil.getApplicationIsEnable
 import coil.compose.rememberImagePainter
 import coil.transform.GrayscaleTransformation
 
 @ExperimentalFoundationApi
 @Composable
 fun InstalledApplicationCard(
-    installedApplication: InstalledApplication,
+    installedPackage: InstalledPackage,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
@@ -30,8 +30,8 @@ fun InstalledApplicationCard(
     ) {
         Image(
             painter = rememberImagePainter(
-                installedApplication.applicationIcon, builder = {
-                    if (getApplicationIsEnable(installedApplication.packageName) == false) {
+                installedPackage.applicationIcon, builder = {
+                    if (getApplicationIsEnable(installedPackage.packageName) == false) {
                         transformations(GrayscaleTransformation())
                     }
                 }
@@ -44,11 +44,11 @@ fun InstalledApplicationCard(
             modifier = Modifier.width(255.dp)
         ) {
             Text(
-                text = installedApplication.applicationLabel,
+                text = installedPackage.applicationLabel,
                 textAlign = TextAlign.Start
             )
             Text(
-                text = installedApplication.packageName,
+                text = installedPackage.packageName,
                 textAlign = TextAlign.Start,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
